@@ -23,7 +23,9 @@ router.get("/:value", (req, res) => {
     });
     mysqlConnection.getConnection((err, connection) => {
       connection.query(
-        `insert into tbl_ratings (\`value\`,\`creation\`) value ('1','${myDate_string}');`,
+        `insert into tbl_ratings (\`value\`,\`creation\`) value ('${
+          req.params.value
+        }','${myDate_string}');`,
         (errors, results, fields) => {
           if (errors) {
             console.log(errors);
@@ -41,7 +43,7 @@ router.get("/:value", (req, res) => {
   }
   mysqlConnection.getConnection((err, connection) => {
     connection.query(
-      `SELECT avg(if(VALUE = 1,1,0)) AS \`like\`, avg(if(VALUE = 0,1,0)) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('2019-04-25 09:09:23', INTERVAL 3 HOUR)`,
+      `SELECT avg(if(VALUE = 1,1,0)) AS \`like\`, avg(if(VALUE = 0,1,0)) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`,
       (errors, results, fields) => {
         if (errors) {
           console.log(errors);
@@ -54,7 +56,7 @@ router.get("/:value", (req, res) => {
         res.render("home/index", {
           item: "index" /* For navbar active */,
           defaultStyle: defaultStyle,
-          like: results[0]["like"] * 100 - 2,
+          like: results[0]["like"] * 100,
           unlike: results[0]["unlike"] * 100
         });
       }

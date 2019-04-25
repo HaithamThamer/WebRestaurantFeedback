@@ -11,6 +11,45 @@
             margin: 0px;
             padding: 0px;
         }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        ul {
+            list-style-type: none;
+            align-content: center;
+            align-items: center;
+            align-self: center;
+            text-align: center;
+            height: 100%;
+            display: block;
+            position: relative;
+
+        }
+
+        li {
+            display: inline-block;
+            margin: -2px;
+            width: 50%;
+            align-content: center;
+            align-items: center;
+            align-self: center;
+            text-align: center;
+            height: 100%;
+
+        }
+
+        #like {
+            background-color: #A8E6CF;
+        }
+
+        #unlike {
+            background-color: #FF8B94;
+        }
     </style>
 </head>
 
@@ -23,11 +62,9 @@
     {{>home/footer}}
     {{>footerContent}} --}}
 
-    <ul
-        style="height:100%;position:absolute;list-style-type: none;display: inline-block;background-color: #A8E6CF;width:100%;">
-        <li style="height:100%;background-color:#A8E6CF; display: inline-block;width:{{like}}%">{{like}} like %</li>
-        <li style="height:100%;background-color:#FF8B94; display: inline-block;width:{{unlike}}%">{{unlike}} unlike %
-        </li>
+    <ul>
+        <li id="like" style="width:{{like}}%">{{like}} %</li>
+        <li id="unlike" style="width:{{unlike}}%">{{unlike}} %</li>
 
     </ul>
 </body>
