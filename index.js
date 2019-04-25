@@ -9,14 +9,16 @@ const constants = require("./config/constants"),
   flash = require("connect-flash"),
   mysql = require("mysql"),
   bodyParser = require("body-parser");
+
 var defaults = {
   style: "default",
   language: "ar"
 };
-const uuidv1 = require("uuid/v1");
 //
 const app = express();
 
+//
+global.constants = constants;
 //
 const mysqlConnection = mysql.createPool({
   host: constants.mysql.host,

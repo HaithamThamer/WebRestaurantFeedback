@@ -5,17 +5,61 @@ router.all("*", (req, res, next) => {
   res.app.locals.layout = "home/index";
   next();
 });
-router.get("/", (req, res) => {
+router.get("/:value", (req, res) => {
   const defaultStyle = req.app.get("defaultStyle");
-  const uuidv1 = require("uuid/v1");
-  // inside middleware handler
-  const requestIp = require("request-ip");
+  const Cookies = require("cookies");
+  var cookies = new Cookies(req, res, { keys: ["haitham"] });
+  // Get a cookie
+  var lastVisit = cookies.get("LastVisit20", { signed: true });
+  var myDate = new Date();
+  var myDate_string = myDate.toISOString();
+  var myDate_string = myDate_string.replace("T", " ");
+  var myDate_string = myDate_string.substring(0, myDate_string.length - 5);
 
-  console.log(requestIp.getClientIp(req));
+  if (!lastVisit) {
+    cookies.set("LastVisit20", new Date(), {
+      signed: true,
+      expires: new Date(new Date().setHours(new Date().getHours() + 3))
+    });
+    mysqlConnection.getConnection((err, connection) => {
+      connection.query(
+        `insert into tbl_ratings (\`value\`,\`creation\`) value ('1','${myDate_string}');`,
+        (errors, results, fields) => {
+          if (errors) {
+            console.log(errors);
+            res
+              .status(500)
+              .json({ err: errors })
+              .end();
+            return;
+          }
+        }
+      );
 
-  res.render("home/index", {
-    item: "index" /* For navbar active */,
-    defaultStyle: defaultStyle
+      connection.release();
+    });
+  }
+  mysqlConnection.getConnection((err, connection) => {
+    connection.query(
+      `SELECT avg(if(VALUE = 1,1,0)) AS \`like\`, avg(if(VALUE = 0,1,0)) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('2019-04-25 09:09:23', INTERVAL 3 HOUR)`,
+      (errors, results, fields) => {
+        if (errors) {
+          console.log(errors);
+          res
+            .status(500)
+            .json({ err: errors })
+            .end();
+          return;
+        }
+        res.render("home/index", {
+          item: "index" /* For navbar active */,
+          defaultStyle: defaultStyle,
+          like: results[0]["like"] * 100 - 2,
+          unlike: results[0]["unlike"] * 100
+        });
+      }
+    );
+    connection.release();
   });
 });
 

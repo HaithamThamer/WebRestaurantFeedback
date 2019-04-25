@@ -10,5 +10,8 @@ module.exports = {
     username: process.env.mysql_username,
     password: process.env.mysql_password,
     database: process.env.mysql_database
+  },
+  cookies: {
+    keys: process.env.cookies
   }
 };

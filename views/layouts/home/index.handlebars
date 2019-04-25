@@ -5,18 +5,31 @@
 
     {{>headContent}}
 
-    <link rel="stylesheet" href="/style/{{defaultStlye}}/main.css">
-    <title>{{texts.headerTitle}}</title>
+    <title></title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
 </head>
 
 <body>
-    {{>home/header}}
+    {{!-- {{>home/header}}
     {{>home/navbar}}
     <section id="realBody">
         {{{body}}}
     </section>
     {{>home/footer}}
-    {{>footerContent}}
+    {{>footerContent}} --}}
+
+    <ul
+        style="height:100%;position:absolute;list-style-type: none;display: inline-block;background-color: #A8E6CF;width:100%;">
+        <li style="height:100%;background-color:#A8E6CF; display: inline-block;width:{{like}}%">{{like}} like %</li>
+        <li style="height:100%;background-color:#FF8B94; display: inline-block;width:{{unlike}}%">{{unlike}} unlike %
+        </li>
+
+    </ul>
 </body>
 
 </html>
