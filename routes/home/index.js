@@ -5,7 +5,7 @@ router.all("*", (req, res, next) => {
   res.app.locals.layout = "home/index";
   next();
 });
-router.get("/:value", (req, res) => {
+router.get("/rate/:val", (req, res) => {
   const defaultStyle = req.app.get("defaultStyle");
   const Cookies = require("cookies");
   var cookies = new Cookies(req, res, { keys: ["haitham"] });
@@ -22,9 +22,10 @@ router.get("/:value", (req, res) => {
       expires: new Date(new Date().setHours(new Date().getHours() + 3))
     });
     mysqlConnection.getConnection((err, connection) => {
+      console.log(req.params.val);
       connection.query(
         `insert into tbl_ratings (\`value\`,\`creation\`) value ('${
-          req.params.value
+          req.params.val
         }','${myDate_string}');`,
         (errors, results, fields) => {
           if (errors) {
