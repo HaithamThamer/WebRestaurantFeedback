@@ -58,7 +58,7 @@ router.get("/rate/:val", (req, res) => {
           item: "index" /* For navbar active */,
           defaultStyle: defaultStyle,
           like: results[0]["like"] * 100,
-          unlike: results[0]["unlike"] * 100
+          unlike: 100 - results[0]["like"] * 100
         });
       }
     );
