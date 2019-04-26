@@ -44,7 +44,7 @@ router.get("/rate/:val", (req, res) => {
   }
   mysqlConnection.getConnection((err, connection) => {
     connection.query(
-      `SELECT avg(if(VALUE = 1,1,0)) AS \`like\`, avg(if(VALUE = 0,1,0)) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`,
+      `SELECT format(avg(if(VALUE = 1,1,0)),1) AS \`like\`, format(avg(if(VALUE = 0,1,0)),1) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`,
       (errors, results, fields) => {
         if (errors) {
           console.log(errors);
