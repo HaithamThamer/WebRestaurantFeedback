@@ -25,21 +25,24 @@
             align-items: center;
             align-self: center;
             text-align: center;
-            height: 100%;
-            display: block;
             position: relative;
-
+            height: 100%;
+            background-color: red;
         }
 
         li {
             display: inline-block;
             margin: -2px;
-            width: 50%;
-            align-content: center;
-            align-items: center;
-            align-self: center;
-            text-align: center;
             height: 100%;
+        }
+
+        li>p {
+            position: absolute;
+            top: 45%;
+            overflow: hidden;
+            position: relative;
+            font-size: 40px;
+
         }
 
         #like {
@@ -48,6 +51,22 @@
 
         #unlike {
             background-color: #FF8B94;
+        }
+
+        #amount {
+            position: absolute;
+            z-index: 2;
+            right: 50%;
+            top: 20%;
+        }
+
+        #amount>p {
+            font-size: 28px;
+            color: white;
+            background-color: #212529;
+            padding: 2px 5px;
+            border-radius: 2px;
+            display: inline-block;
         }
     </style>
 </head>
@@ -60,10 +79,28 @@
     </section>
     {{>home/footer}}
     {{>footerContent}} --}}
+    <div id="amount" style="right:calc({{like}}% - 22px);">
+        <p>
+            #{{amount}}
+        </p>
+    </div>
 
     <ul>
-        <li id="like" style="width:{{like}}%">{{like}} %</li>
-        <li id="unlike" style="width:{{unlike}}%">{{unlike}} %</li>
+
+        <li id="like" style="width:{{like}}%">
+            <p>
+                <i class="fas fa-thumbs-up"></i>
+                {{like}} %
+
+            </p>
+        </li>
+        <li id="unlike" style="width:{{unlike}}%">
+            <p>
+                <i class="fas fa-thumbs-down"></i>
+                {{unlike}} %
+
+            </p>
+        </li>
 
     </ul>
 </body>

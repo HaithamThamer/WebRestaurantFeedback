@@ -43,8 +43,11 @@ router.get("/rate/:val", (req, res) => {
     });
   }
   mysqlConnection.getConnection((err, connection) => {
+    // console.log(
+    //   `SELECT format(avg(if(VALUE = 1,1,0)),1) AS \`like\`, format(avg(if(VALUE = 0,1,0)),1) AS \`unlike\`, sum(value) as \`amount\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`
+    // );
     connection.query(
-      `SELECT format(avg(if(VALUE = 1,1,0)),1) AS \`like\`, format(avg(if(VALUE = 0,1,0)),1) AS \`unlike\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`,
+      `SELECT format(avg(if(VALUE = 1,1,0)),1) AS \`like\`, format(avg(if(VALUE = 0,1,0)),1) AS \`unlike\`, count(value) as \`amount\` FROM tbl_ratings ratings WHERE ratings.creation >= DATE_SUB('${myDate_string}', INTERVAL 3 HOUR)`,
       (errors, results, fields) => {
         if (errors) {
           console.log(errors);
@@ -58,7 +61,8 @@ router.get("/rate/:val", (req, res) => {
           item: "index" /* For navbar active */,
           defaultStyle: defaultStyle,
           like: results[0]["like"] * 100,
-          unlike: 100 - results[0]["like"] * 100
+          unlike: 100 - results[0]["like"] * 100,
+          amount: results[0]["amount"]
         });
       }
     );
