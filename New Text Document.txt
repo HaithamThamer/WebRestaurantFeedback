@@ -1,0 +1,28 @@
+SELECT
+	a.DATE,
+	(
+		select
+			COUNT(*)
+		from
+			tbl_ratings ratings
+		where
+			ratings.creation BETWEEN CONCAT(a.DATE,' 00:00:00') AND CONCAT(a.DATE,' 23:59:59')
+	) AS `count`,
+	 IFNULL((
+		select
+			AVG(ratings.value)
+		from
+			tbl_ratings ratings
+		where
+			ratings.creation BETWEEN CONCAT(a.DATE,' 00:00:00') AND CONCAT(a.DATE,' 23:59:59')
+	),0) AS `rate`
+FROM
+
+
+(
+    select last_day('2019-05-01') - INTERVAL (a.a + (10 * b.a) + (100 * c.a)) DAY as Date
+    from (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as a
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as b
+    cross join (select 0 as a union all select 1 union all select 2 union all select 3 union all select 4 union all select 5 union all select 6 union all select 7 union all select 8 union all select 9) as c
+) a
+where a.Date BETWEEN '2019-05-01' and last_day('2019-05-01') order by a.Date;
